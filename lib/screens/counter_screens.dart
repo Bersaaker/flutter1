@@ -9,6 +9,21 @@ class CounterScreen extends StatefulWidget {
 
 class _CounterScreenState extends State<CounterScreen> {
   int contador = 0;
+  void incrementar() {
+    contador++;
+    setState(() {});
+  }
+
+  void decrementar() {
+    contador--;
+    setState(() {});
+  }
+
+  void reset() {
+    contador = 0;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     const TextStyle estiloTexto = TextStyle(
@@ -39,28 +54,50 @@ class _CounterScreenState extends State<CounterScreen> {
           ],
         )),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            FloatingActionButton(
-              backgroundColor: Colors.black45,
-              foregroundColor: Colors.grey,
-              onPressed: () => setState(() => contador--),
-              child: const Icon(Icons.exposure_minus_1),
-            ),
-            FloatingActionButton(
-              backgroundColor: Colors.black45,
-              foregroundColor: Colors.grey,
-              onPressed: () => setState(() => contador = 0),
-              child: const Icon(Icons.restore),
-            ),
-            FloatingActionButton(
-              backgroundColor: Colors.black45,
-              foregroundColor: Colors.grey,
-              onPressed: () => setState(() => contador++),
-              child: const Icon(Icons.exposure_plus_1),
-            ),
-          ],
+        floatingActionButton: customActionButton(
+          decrease: decrementar,
+          increase: incrementar,
+          reset: reset,
         ));
+  }
+}
+
+class customActionButton extends StatelessWidget {
+  final Function increase;
+  final Function decrease;
+  final Function reset;
+
+  const customActionButton({
+    super.key,
+    required this.increase,
+    required this.decrease,
+    required this.reset,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        FloatingActionButton(
+          backgroundColor: Colors.black45,
+          foregroundColor: Colors.grey,
+          onPressed: () => decrease(),
+          child: const Icon(Icons.exposure_minus_1),
+        ),
+        FloatingActionButton(
+          backgroundColor: Colors.black45,
+          foregroundColor: Colors.grey,
+          onPressed: () => reset(),
+          child: const Icon(Icons.restore),
+        ),
+        FloatingActionButton(
+          backgroundColor: Colors.black45,
+          foregroundColor: Colors.grey,
+          onPressed: () => increase(),
+          child: const Icon(Icons.exposure_plus_1),
+        ),
+      ],
+    );
   }
 }
